@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Joanna ABC Game - a simple game to teach my kid the alphabet on a keyboard.">
+  <title>Joanna ABC Game</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    #gameContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background-color: #f0f0f0;
+    }
+
+    #gameArea {
+      font-size: 300px;
+      text-align: center;
+    }
+
+    #score {
+      margin-top: 18px;
+      font-size: 18px;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-10px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(10px);
+      }
+    }
+
+    .shake {
+      animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+      color: darkred;
+    }
+
+    #smiley,
+    #sad {
+      font-size: 60px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="gameContainer">
+    <div id="gameArea"></div>
+    <div id="feedback">
+      <div id="smiley">😊</div>
+      <div id="sad" class="hidden">😞</div>
+    </div>
+    <div id="score">Score: 0</div>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let score = 0;
+
+      function generateRandomLetter() {
+        return letters[Math.floor(Math.random() * letters.length)];
+      }
+
+      function updateGameArea() {
+        const letter = generateRandomLetter();
+        document.getElementById('gameArea').textContent = letter;
+        document.getElementById('gameArea').classList.remove('shake');
+      }
+
+      document.addEventListener('keydown', (event) => {
+        const currentLetter = document.getElementById('gameArea').textContent;
+        if (event.key.toUpperCase() === currentLetter) {
+          score++;
+          updateFeedback(true);
+          updateGameArea();
+        } else {
+          updateFeedback(false);
+          document.getElementById('gameArea').classList.add('shake');
+          setTimeout(() => document.getElementById('gameArea').classList.remove('shake'), 500);
+        }
+        updateScore();
+      });
+
+      function updateFeedback(isCorrect) {
+        document.getElementById('smiley').style.display = isCorrect ? 'block' : 'none';
+        document.getElementById('sad').style.display = isCorrect ? 'none' : 'block';
+      }
+
+      function updateScore() {
+        document.getElementById('score').textContent = `Score: ${score}`;
+      }
+
+      updateGameArea();
+    });
+
+  </script>
+</body>
+
+</html>
