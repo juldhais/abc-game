@@ -62,6 +62,34 @@
       color: darkred;
     }
 
+    @keyframes jump {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateY(-10px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateY(0);
+      }
+    }
+
+    .jump {
+      animation: jump 1s ease;
+      color: green;
+    }
+
     #smiley,
     #sad {
       font-size: 60px;
@@ -104,12 +132,17 @@
         const currentLetter = document.getElementById('gameArea').textContent;
         if (event.key.toUpperCase() === currentLetter) {
           score++;
+          document.getElementById('gameArea').classList.add('jump');
           updateFeedback(true);
-          updateGameArea();
+          setTimeout(() => {
+            document.getElementById('gameArea').classList.remove('jump');
+            updateGameArea();
+          }, 1200);
+
         } else {
           updateFeedback(false);
           document.getElementById('gameArea').classList.add('shake');
-          setTimeout(() => document.getElementById('gameArea').classList.remove('shake'), 500);
+          setTimeout(() => document.getElementById('gameArea').classList.remove('shake'), 1000);
         }
         updateScore();
       });
